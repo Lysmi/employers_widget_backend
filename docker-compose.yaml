@@ -1,0 +1,8 @@
+version: "3.9"
+services:
+  web:
+    container_name: vpnrestapi
+    build: .
+    port: 
+      - 8088:8088
+    restart: always
