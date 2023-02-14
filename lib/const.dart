@@ -8,3 +8,10 @@ const groupId = {
   'reservierungsabteilung_night': 9664,
   'kundenbetreuung_night': 9667,
 };
+
+const groupsName = [
+  'kundenbetreuung',
+  'reservierungsabteilung',
+  'partner',
+  'reception',
+];

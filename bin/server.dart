@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:employers_widget_backend/const.dart';
 import 'package:employers_widget_backend/entities/manager_entity.dart';
 import 'package:neat_periodic_task/neat_periodic_task.dart';
 import 'package:shelf/shelf.dart';
@@ -62,6 +63,12 @@ void main(List<String> args) async {
           .body);
       final usersId = await getManagersIdList();
       DateTime now = DateTime.now().toUtc();
+      if (now.hour == 4 && now.minute == 0) {
+        for (var departmentName in groupsName) {
+          updateGroupEmployees([], "${departmentName}_night");
+          print("clearEmployers");
+        }
+      }
       data.entries.forEach((element) {
         var manager = ManagerEntity.fromMap(element.value);
         final weekDay = now.weekday - 1;
@@ -83,11 +90,9 @@ void main(List<String> args) async {
           final userId = usersId[manager.name];
           if (userId != null) {
             for (var departmentEntry in manager.data.entries) {
-              if (departmentEntry.value[weekDay * 2]) {
-                removeEmployer(userId, "${departmentEntry.key}_day");
-                print(
-                    "removed employer ${manager.name} from ${departmentEntry.key}_day");
-              }
+              removeEmployer(userId, "${departmentEntry.key}_day");
+              print(
+                  "removed employer ${manager.name} from ${departmentEntry.key}_day");
               if (departmentEntry.value[weekDay * 2 + 1]) {
                 addEmployer(userId, "${departmentEntry.key}_night");
                 print(
@@ -96,16 +101,6 @@ void main(List<String> args) async {
             }
           }
         }
-        if (now.hour == 0 && now.minute == 0) {
-          final userId = usersId[manager.name];
-          if (userId != null) {
-            for (var departmentEntry in manager.data.entries) {
-              updateGroupEmployees([], "${departmentEntry.key}_night");
-              print("clearEmployers");
-            }
-          }
-        }
-        //TODO create logic
       });
     },
     minCycle: Duration(seconds: 10),

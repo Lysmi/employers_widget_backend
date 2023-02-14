@@ -85,7 +85,7 @@ Future<Map<String, dynamic>> updateGroupEmployees(
                 "params": {
                   "id": groupId[groupName],
                   "name": groupName,
-                  "members": usersId,
+                  "members": usersId.isEmpty ? "[]" : usersId,
                   "access_token": "5l3tgozq1wvy72h14awnq8ev0os5t25lnj211xgl"
                 }
               }),
