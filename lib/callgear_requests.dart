@@ -119,10 +119,11 @@ Future<Map<String, dynamic>> removeEmployer(
   List<Map<String, dynamic>> groupMembers = (group["members"] as List)
       .map((e) => Map<String, dynamic>.from(e))
       .toList();
+  print('employee_id: $groupMembers');
   var groupMembersId = groupMembers.map((e) => e["employee_id"] as int);
-  print('groupMembersId before deleting: $groupMembersId');
+  print('groupMembersId before deleting from $groupName: $groupMembersId');
   groupMembersId = groupMembersId.where((element) => element != userId);
-  print('groupMembersId after deleting: $groupMembersId');
+  print('groupMembersId after deleting from $groupName: $groupMembersId');
   var res = await updateGroupEmployees(groupMembersId.toList(), groupName);
   return res;
 }
