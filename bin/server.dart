@@ -65,11 +65,11 @@ void main(List<String> args) async {
       DateTime now = DateTime.now().toUtc();
       if (now.hour == 4 && now.minute == 0) {
         for (var departmentName in groupsName) {
-          updateGroupEmployees([], "${departmentName}_night");
+          await updateGroupEmployees([], "${departmentName}_night");
           print("clearEmployers");
         }
       }
-      data.entries.forEach((element) {
+      data.entries.forEach((element) async {
         var manager = ManagerEntity.fromMap(element.value);
         final weekDay = now.weekday - 1;
         if (now.hour == manager.timeStart[weekDay].hour &&
@@ -78,7 +78,7 @@ void main(List<String> args) async {
           if (userId != null) {
             for (var departmentEntry in manager.data.entries) {
               if (departmentEntry.value[weekDay * 2]) {
-                addEmployer(userId, "${departmentEntry.key}_day");
+                await addEmployer(userId, "${departmentEntry.key}_day");
                 print(
                     "added employer ${manager.name} to ${departmentEntry.key}_day");
               }
@@ -90,11 +90,11 @@ void main(List<String> args) async {
           final userId = usersId[manager.name];
           if (userId != null) {
             for (var departmentEntry in manager.data.entries) {
-              removeEmployer(userId, "${departmentEntry.key}_day");
+              await removeEmployer(userId, "${departmentEntry.key}_day");
               print(
                   "removed employer ${manager.name} from ${departmentEntry.key}_day");
               if (departmentEntry.value[weekDay * 2 + 1]) {
-                addEmployer(userId, "${departmentEntry.key}_night");
+                await addEmployer(userId, "${departmentEntry.key}_night");
                 print(
                     "added employer ${manager.name} to ${departmentEntry.key}_night");
               }
